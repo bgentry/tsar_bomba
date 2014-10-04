@@ -1,0 +1,8 @@
+- if flash[:notice]
+  .alert.alert-info
+    %a.close{:href => '#', 'data-dismiss' => 'notice'} x
+    %p= flash[:notice]
+- if flash[:alert]
+  .alert.alert-danger
+    %a.close{:href => '#', 'data-dismiss' => 'alert'} x
+    %p= flash[:alert]
