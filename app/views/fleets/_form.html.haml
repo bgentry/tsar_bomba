@@ -1,0 +1,21 @@
+= form_for @fleet, :html => { :class => "form-horizontal" } do |f|
+  -if @fleet.errors.any?
+    .alert.alert-danger.alert-dismissable
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+      %h4= "#{pluralize(@fleet.errors.count, "error")} prohibited this fleet from being saved:"
+
+      %ul
+        - @fleet.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.label :instance_type, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.select :instance_type, Fleet::AMAZON_FLAVORS, {include_blank: false}, {required: true, class: 'form-control'}
+  .form-group
+    = f.label :instance_count, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.number_field :instance_count, in: 1...100, :class => 'form-control'
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit :class => 'btn btn-primary'
