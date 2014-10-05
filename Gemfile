@@ -36,18 +36,21 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Puma as the app server
 gem 'puma'
 
-gem 'fog'
+gem 'fog', github: 'fog/fog'
 
 group :development, :test do
   gem 'awesome_print'
   gem 'guard-rspec'
+  gem 'rb-fsevent' if `uname` =~ /Darwin/
 
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'spring-commands-rspec'
   gem 'rspec-rails'
+  gem "shoulda-matchers", require: false
 end
 
 group :development, :production do

@@ -1,8 +1,4 @@
-- if flash[:notice]
-  .alert.alert-info
-    %a.close{:href => '#', 'data-dismiss' => 'notice'} x
-    %p= flash[:notice]
-- if flash[:alert]
-  .alert.alert-danger
-    %a.close{:href => '#', 'data-dismiss' => 'alert'} x
-    %p= flash[:alert]
+- flash.each do |name, msg|
+  = content_tag :div, :class => "alert alert-#{name == :error ? "danger" : "success" } alert-dismissable" do
+    %button.close{:type => "button", :data => {:dismiss => "alert"}, :aria => {:hidden => "true"} } &times;
+    = msg
