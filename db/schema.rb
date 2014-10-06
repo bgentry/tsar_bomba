@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006061158) do
+ActiveRecord::Schema.define(version: 20141006070138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "fleets", force: true do |t|
-    t.string   "instance_type",  null: false
-    t.integer  "instance_count", null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "instance_type",   null: false
+    t.integer  "instance_count",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "provider_region"
   end
 
   create_table "instances", force: true do |t|
