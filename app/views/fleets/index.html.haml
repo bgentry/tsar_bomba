@@ -12,7 +12,6 @@
         %th Instance count
         %th
         %th
-        %th
 
     %tbody
       - @fleets.each do |fleet|
@@ -20,5 +19,4 @@
           %td= fleet.instance_type
           %td= fleet.instance_count
           %td= link_to 'Show', fleet
-          %td= link_to 'Edit', edit_fleet_path(fleet)
           %td= link_to 'Destroy', fleet, :data => { confirm: 'Are you sure?' }, :method => :delete

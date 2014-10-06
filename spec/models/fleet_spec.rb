@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Fleet, :type => :model do
+  it { should have_readonly_attribute(:instance_count) }
+  it { should have_readonly_attribute(:instance_type) }
+
   it { should have_many(:instances) }
 
   context "AMAZON_FLAVORS" do

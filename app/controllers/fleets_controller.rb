@@ -17,10 +17,6 @@ class FleetsController < ApplicationController
     @fleet = Fleet.new
   end
 
-  # GET /fleets/1/edit
-  def edit
-  end
-
   # POST /fleets
   # POST /fleets.json
   def create
@@ -32,20 +28,6 @@ class FleetsController < ApplicationController
         format.json { render :show, status: :created, location: @fleet }
       else
         format.html { render :new }
-        format.json { render json: @fleet.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /fleets/1
-  # PATCH/PUT /fleets/1.json
-  def update
-    respond_to do |format|
-      if @fleet.update(fleet_params)
-        format.html { redirect_to @fleet, notice: 'Fleet was successfully updated.' }
-        format.json { render :show, status: :ok, location: @fleet }
-      else
-        format.html { render :edit }
         format.json { render json: @fleet.errors, status: :unprocessable_entity }
       end
     end

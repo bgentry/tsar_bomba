@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'fleets#index'
 
-  resources :fleets do
+  resources :fleets, :except => [:edit, :update] do
     resources :instances, :only => :show
   end
 
