@@ -44,7 +44,10 @@ group :development, :test do
   gem 'awesome_print'
   gem "factory_girl_rails"
   gem 'guard-rspec'
-  gem 'rb-fsevent' if `uname` =~ /Darwin/
+  if RUBY_PLATFORM.downcase.include?("darwin")
+    gem 'rb-fsevent'
+    gem 'rspec-nc'
+  end
 
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
