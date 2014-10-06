@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   root 'fleets#index'
 
-  resources :fleets
+  resources :fleets do
+    resources :instances, :only => :show
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

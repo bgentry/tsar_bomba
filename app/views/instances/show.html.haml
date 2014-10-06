@@ -1,0 +1,13 @@
+.page-header
+  = link_to @instance.fleet, :class => 'btn btn-default' do
+    %span.glyphicon.glyphicon-list-alt
+    Back
+  %h1 Show instance
+
+%dl.dl-horizontal
+  %dt Fleet:
+  %dd= @instance.fleet_id
+  %dt Provider:
+  %dd= @instance.provider_id
+  %dt State:
+  %dd= @instance.state

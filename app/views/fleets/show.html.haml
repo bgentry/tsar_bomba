@@ -12,3 +12,21 @@
   %dd= @fleet.instance_type
   %dt Instance count:
   %dd= @fleet.instance_count
+
+%h2 Instances
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Provider ID
+        %th State
+        %th
+        %th
+        %th
+
+    %tbody
+      - @fleet.instances.each do |instance|
+        %tr
+          %td= instance.provider_id
+          %td= instance.state
+          %td= link_to 'Show', [@fleet, instance]

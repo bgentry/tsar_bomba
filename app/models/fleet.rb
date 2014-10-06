@@ -3,6 +3,8 @@ require 'fog'
 class Fleet < ActiveRecord::Base
   include ActiveModel::Validations
 
+  has_many :instances, :dependent => :destroy
+
   AMAZON_FLAVORS = Fog::Compute[:aws].flavors.map(&:id)
 
   validates :instance_type, presence: true, inclusion: {

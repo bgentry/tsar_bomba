@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Fleet, :type => :model do
+  it { should have_many(:instances) }
+
   context "AMAZON_FLAVORS" do
     it "should have AMAZON_FLAVORS set to the correct array" do
       expect(Fleet.constants).to include(:AMAZON_FLAVORS)

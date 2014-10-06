@@ -11,16 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141004044046) do
+ActiveRecord::Schema.define(version: 20141006004354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "fleets", force: true do |t|
-    t.string   "instance_type",  limit: nil, null: false
-    t.integer  "instance_count",             null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.string   "instance_type",  null: false
+    t.integer  "instance_count", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
+  create_table "instances", force: true do |t|
+    t.integer  "fleet_id"
+    t.string   "provider_id"
+    t.string   "state"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_foreign_key "instances", "fleets"
 end
