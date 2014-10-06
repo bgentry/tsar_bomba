@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20141006070138) do
     t.integer  "instance_count",  null: false
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
-    t.string   "provider_region"
+    t.string   "provider_region", null: false
   end
 
   create_table "instances", force: true do |t|

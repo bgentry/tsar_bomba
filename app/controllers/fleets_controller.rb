@@ -51,6 +51,6 @@ class FleetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fleet_params
-      params.require(:fleet).permit(:instance_type, :instance_count)
+      params.require(:fleet).permit(:provider_region, :instance_type, :instance_count)
     end
 end

@@ -9,6 +9,10 @@
           %li= msg
 
   .form-group
+    = f.label :provider_region, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.select :provider_region, Fleet::AMAZON_REGIONS, {include_blank: false}, {required: true, class: 'form-control'}
+  .form-group
     = f.label :instance_type, :class => 'col-sm-2 control-label'
     .col-sm-10
       = f.select :instance_type, Fleet::AMAZON_FLAVORS, {include_blank: false}, {required: true, class: 'form-control'}

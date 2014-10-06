@@ -10,6 +10,7 @@
       %tr
         %th Instance type
         %th Instance count
+        %th Provider region
         %th
         %th
 
@@ -18,5 +19,6 @@
         %tr
           %td= fleet.instance_type
           %td= fleet.instance_count
+          %td= fleet.provider_region
           %td= link_to 'Show', fleet
           %td= link_to 'Destroy', fleet, :data => { confirm: 'Are you sure?' }, :method => :delete

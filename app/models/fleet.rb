@@ -8,6 +8,8 @@ class Fleet < ActiveRecord::Base
   has_many :instances, :dependent => :destroy
 
   AMAZON_FLAVORS = Fog::Compute[:aws].flavors.map(&:id)
+  AMAZON_REGIONS = %w{us-east-1 us-west-1 us-west-2 eu-west-1 ap-southeast-1
+    ap-southeast-2 ap-northeast-1 sa-east-1}
 
   validates :instance_type, presence: true, inclusion: {
     in: AMAZON_FLAVORS,
@@ -17,5 +19,9 @@ class Fleet < ActiveRecord::Base
     greater_than: 0,
     less_than_or_equal_to: 100,
     message: "must be between 1 and 100",
+  }
+  validates :provider_region, presence: true, inclusion: {
+    in: AMAZON_REGIONS,
+    message: "must be a valid AWS region",
   }
 end
