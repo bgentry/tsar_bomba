@@ -37,6 +37,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'puma'
 
 gem 'fog', github: 'fog/fog'
+gem 'workflow'
 
 group :development, :test do
   gem 'awesome_print'
