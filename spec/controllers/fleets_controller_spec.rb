@@ -23,9 +23,7 @@ RSpec.describe FleetsController, :type => :controller do
   # This should return the minimal set of attributes required to create a valid
   # Fleet. As you add validations to Fleet, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    {instance_type: "t2.micro", instance_count: 2}
-  }
+  let(:valid_attributes) { attributes_for(:fleet) }
 
   let(:invalid_attributes) {
     {instance_type: "fake instance type", instance_count: 0}

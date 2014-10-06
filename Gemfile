@@ -42,6 +42,7 @@ gem 'workflow'
 
 group :development, :test do
   gem 'awesome_print'
+  gem "factory_girl_rails"
   gem 'guard-rspec'
   gem 'rb-fsevent' if `uname` =~ /Darwin/
 

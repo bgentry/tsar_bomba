@@ -20,7 +20,7 @@ require 'rails_helper'
 
 RSpec.describe InstancesController, :type => :controller do
 
-  let(:fleet) { Fleet.create!(instance_count: 1, instance_type: "t2.micro") }
+  let(:fleet) { create(:fleet) }
 
   # This should return the minimal set of attributes required to create a valid
   # Instance. As you add validations to Instance, be sure to
