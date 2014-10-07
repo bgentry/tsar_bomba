@@ -2,6 +2,9 @@
   = link_to fleets_path, :class => 'btn btn-default' do
     %span.glyphicon.glyphicon-list-alt
     Back
+  = link_to @fleet, :class => 'btn btn-danger', :data => { confirm: 'Are you sure?' }, :method => :delete do
+    %span.glyphicon.glyphicon-trash
+    Destroy
   %h1 Show fleet
 
 %dl.dl-horizontal
@@ -17,15 +20,13 @@
   %table.table.table-striped.table-bordered.table-hover
     %thead
       %tr
+        %th ID
         %th Provider ID
         %th State
-        %th
-        %th
-        %th
 
     %tbody
       - @fleet.instances.each do |instance|
         %tr
+          %td= link_to instance.to_param, [@fleet, instance]
           %td= instance.provider_id
           %td= instance.state
-          %td= link_to 'Show', [@fleet, instance]
