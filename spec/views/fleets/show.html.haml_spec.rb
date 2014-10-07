@@ -16,7 +16,7 @@ RSpec.describe "fleets/show", :type => :view do
 
   it "renders a list of instances in the fleet" do
     render
-    assert_select "tr>td", :text => @instance1.provider_id, :count => 1
-    assert_select "tr>td", :text => @instance2.provider_id, :count => 1
+    assert_select "tr>td", :text => @instance1.to_param, :count => 1
+    assert_select "tr>td", :text => @instance2.to_param, :count => 1
   end
 end
