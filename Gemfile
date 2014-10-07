@@ -59,6 +59,10 @@ group :development, :test do
   gem "shoulda-matchers", require: false
 end
 
+group :test do
+  gem 'database_cleaner'
+end
+
 group :development, :production do
   gem 'rails_12factor'
 end

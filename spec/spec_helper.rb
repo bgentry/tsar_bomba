@@ -1,3 +1,5 @@
+require 'database_cleaner'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -67,9 +69,18 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = :random
 
+  config.include FactoryGirl::Syntax::Methods
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
   config.before(:each) do
+    DatabaseCleaner.start
     Fog.mock!
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
