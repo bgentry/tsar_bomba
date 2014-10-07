@@ -26,12 +26,19 @@ class Instance < ActiveRecord::Base
       image_id: Providers::AWS.images[fleet.provider_region],
     })
     update_attributes!(provider_id: resp.first.id)
+    WaitForInstanceRunningJob.perform_later(self)
   end
 
   def destroy_instance
     if provider_id.present?
       fog_client.terminate_instances(provider_id)
     end
+  end
+
+  def remote
+    @remote ||= if provider_id.present?
+                  fog_client.servers.get(provider_id)
+                end
   end
 
   protected

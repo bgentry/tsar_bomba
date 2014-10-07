@@ -58,6 +58,11 @@ RSpec.describe Instance, :type => :model do
       instance.launch
       expect(instance.provider_id).to match(/\Ai-[a-f0-9]{8}\z/)
     end
+
+    it "should enqueue a WaitForInstanceRunningJob" do
+      expect(WaitForInstanceRunningJob).to receive(:perform_later).with(instance)
+      instance.launch
+    end
   end
 
   it { should respond_to(:destroy_instance) }
