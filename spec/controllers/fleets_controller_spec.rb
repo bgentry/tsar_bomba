@@ -36,7 +36,7 @@ RSpec.describe FleetsController, :type => :controller do
 
   describe "GET index" do
     it "assigns all fleets as @fleets" do
-      fleet = Fleet.create! valid_attributes
+      fleet = create(:fleet)
       get :index, {}, valid_session
       expect(assigns(:fleets)).to eq([fleet])
     end
