@@ -1,12 +1,8 @@
 class CreateInstancesJob < ActiveJob::Base
-  queue_as ""
+  queue_as :default
 
   rescue_from(ActiveJob::DeserializationError) do |exception|
     puts "deserialization error during CreateInstancesJob: #{exception.inspect}"
-  end
-
-  rescue_from(ActiveRecord::RecordNotFound) do |exception|
-    puts "record not found during CreateInstancesJob: #{exception.inspect}"
   end
 
   def perform(fleet)
