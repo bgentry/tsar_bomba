@@ -21,4 +21,10 @@ class Fleet < ActiveRecord::Base
     in: Providers::AWS.regions,
     message: "must be a valid AWS region",
   }
+
+  after_create :enqueue_create_instances
+
+  def enqueue_create_instances
+    CreateInstancesJob.perform_later(self)
+  end
 end

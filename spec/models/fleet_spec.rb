@@ -28,4 +28,18 @@ RSpec.describe Fleet, :type => :model do
       in_array(Providers::AWS.regions).
       with_message("THIS SHOULD BE BROKEN")
   end
+
+  context :enqueue_create_instances do
+    let(:fleet) { build(:fleet) }
+
+    it "should receive :enqueue_create_instances after create" do
+      expect(fleet).to receive(:enqueue_create_instances)
+      fleet.save!
+    end
+
+    it "should enqueue a CreateInstancesJob" do
+      expect(CreateInstancesJob).to receive(:perform_later).with(fleet)
+      fleet.enqueue_create_instances
+    end
+  end
 end
