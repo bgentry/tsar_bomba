@@ -4,6 +4,7 @@ RSpec.describe Fleet, :type => :model do
   it { should have_readonly_attribute(:instance_count) }
   it { should have_readonly_attribute(:instance_type) }
 
+  it { should have_many(:instances).dependent(:destroy) }
 
   it { should validate_presence_of(:instance_type) }
 
