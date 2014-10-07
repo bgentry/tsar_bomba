@@ -1,4 +1,5 @@
 require 'fog'
+require 'providers'
 
 class Fleet < ActiveRecord::Base
   include ActiveModel::Validations
@@ -7,12 +8,8 @@ class Fleet < ActiveRecord::Base
 
   has_many :instances, :dependent => :destroy
 
-  AMAZON_FLAVORS = Fog::Compute[:aws].flavors.map(&:id)
-  AMAZON_REGIONS = %w{us-east-1 us-west-1 us-west-2 eu-west-1 ap-southeast-1
-    ap-southeast-2 ap-northeast-1 sa-east-1}
-
   validates :instance_type, presence: true, inclusion: {
-    in: AMAZON_FLAVORS,
+    in: Providers::AWS.flavors,
     message: "must be a valid AWS instance size",
   }
   validates :instance_count, presence: true, numericality: {
@@ -21,7 +18,7 @@ class Fleet < ActiveRecord::Base
     message: "must be between 1 and 100",
   }
   validates :provider_region, presence: true, inclusion: {
-    in: AMAZON_REGIONS,
+    in: Providers::AWS.regions,
     message: "must be a valid AWS region",
   }
 end
