@@ -36,6 +36,8 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Puma as the app server
 gem 'puma'
 
+gem 'flipper'
+gem 'flipper-activerecord'
 gem 'fog', github: 'fog/fog'
 gem 'que'
 gem 'workflow'

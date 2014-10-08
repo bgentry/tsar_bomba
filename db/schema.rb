@@ -11,18 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006070138) do
+ActiveRecord::Schema.define(version: 20141008073622) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "fleets", force: true do |t|
-    t.string   "instance_type",   null: false
-    t.integer  "instance_count",  null: false
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.string   "provider_region", null: false
+    t.string   "instance_type",                         null: false
+    t.integer  "instance_count",                        null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.string   "provider_region", default: "us-east-1", null: false
   end
+
+  create_table "flipper_features", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "flipper_features", ["name"], name: "index_flipper_features_on_name", unique: true, using: :btree
+
+  create_table "flipper_gates", force: true do |t|
+    t.integer  "flipper_feature_id", null: false
+    t.string   "name",               null: false
+    t.string   "value"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "flipper_gates", ["flipper_feature_id", "name", "value"], name: "index_flipper_gates_on_flipper_feature_id_and_name_and_value", unique: true, using: :btree
 
   create_table "instances", force: true do |t|
     t.integer  "fleet_id"
@@ -42,5 +60,6 @@ ActiveRecord::Schema.define(version: 20141006070138) do
     t.text     "last_error"
   end
 
+  add_foreign_key "flipper_gates", "flipper_features", on_delete: :cascade
   add_foreign_key "instances", "fleets"
 end

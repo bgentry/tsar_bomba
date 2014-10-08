@@ -85,6 +85,10 @@ GEM
       factory_girl (~> 4.4.0)
       railties (>= 3.0.0)
     ffi (1.9.5)
+    flipper (0.6.2)
+    flipper-activerecord (0.1.1)
+      activerecord (>= 4.2.0.beta2)
+      flipper (~> 0.6)
     fog-brightbox (0.5.1)
       fog-core (~> 1.22)
       fog-json
@@ -281,6 +285,8 @@ DEPENDENCIES
   coffee-rails
   database_cleaner
   factory_girl_rails
+  flipper
+  flipper-activerecord
   fog!
   guard-rspec
   haml-rails
