@@ -1,4 +1,5 @@
 require 'database_cleaner'
+require 'flipper/adapters/memory'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -76,6 +77,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
+    $flipper = Flipper.new(Flipper::Adapters::Memory.new)
     DatabaseCleaner.start
     Fog.mock!
   end
