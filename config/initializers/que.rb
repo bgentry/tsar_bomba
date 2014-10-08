@@ -2,5 +2,11 @@
 # https://github.com/rails/rails/issues/17195
 ENV['QUE_QUEUE'] ||= 'default'
 
-# only sleep workers for 2 seconds instead of default 5
-Que.wake_interval = 2
+if Rails.env.development?
+  # quiet down Que in dev environments
+  Rails.application.config.que.worker_count  = 1
+  Rails.application.config.que.wake_interval = 10
+else
+  # only sleep workers for 2 seconds instead of default 5
+  Rails.application.config.que.wake_interval = 2
+end
