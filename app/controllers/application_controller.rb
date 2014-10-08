@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
 
   def provider_bootstrapped?
     @provider_bootstrapped ||= check_if_provider_bootstrapped
+    unless @provider_bootstrapped
+      flash[:warning] = "Your provider environment has not been bootstrapped."
+    end
     true
   end
 

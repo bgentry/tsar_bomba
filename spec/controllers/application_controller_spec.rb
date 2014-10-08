@@ -11,6 +11,12 @@ RSpec.describe ApplicationController, :type => :controller do
     end
   end
 
+  describe "sets the warning flash when :provider_bootstrapped is not enabled" do
+    before { get :index }
+
+    it { should set_the_flash[:warning].to('Your provider environment has not been bootstrapped.') }
+  end
+
   describe :provider_bootstrapped? do
     subject { controller.test_provider_bootstrapped }
 
