@@ -9,9 +9,9 @@
       = link_to "Tsar Bomba", root_path, :class => "navbar-brand"
     .collapse.navbar-collapse
       %ul.nav.navbar-nav
-        %li.active
-          %a{:href => "#"} Home
-        %li
-          %a{:href => "#about"} About
-        %li
-          %a{:href => "#contact"} Contact
+        %li{class: current_page_class(fleets_path)}
+          = link_to("Fleets", fleets_path)
+        %li{class: current_page_class("#about")}
+          = link_to("Setup",  setup_path)
+        %li{class: current_page_class("#contact")}
+          = link_to("Contact", "#contact")

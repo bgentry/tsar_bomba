@@ -21,7 +21,7 @@ class Instance < ActiveRecord::Base
   end
 
   def launch
-    resp = fog_client.servers.create_many(1, 1, {
+    resp = Providers::AWS::fog_client.servers.create_many(1, 1, {
       flavor_id: fleet.instance_type,
       image_id: Providers::AWS.images[fleet.provider_region],
     })
@@ -31,13 +31,13 @@ class Instance < ActiveRecord::Base
 
   def destroy_instance
     if provider_id.present?
-      fog_client.terminate_instances(provider_id)
+      Providers::AWS::fog_client.terminate_instances(provider_id)
     end
   end
 
   def remote
     @remote ||= if provider_id.present?
-                  fog_client.servers.get(provider_id)
+                  Providers::AWS::fog_client.servers.get(provider_id)
                 end
   end
 
@@ -47,13 +47,4 @@ class Instance < ActiveRecord::Base
     LaunchInstanceJob.perform_later(self)
   end
 
-  private
-
-  def fog_client
-    @fog_client ||= Fog::Compute::AWS.new({
-      :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-      :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
-      :region => 'us-east-1',
-    })
-  end
 end

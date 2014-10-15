@@ -44,7 +44,7 @@ RSpec.describe Providers::AWS do
 
   it { should respond_to(:flavors) }
 
-  context :flavors do
+  describe :flavors do
     it "should return FLAVORS" do
       expect(Providers::AWS.flavors).to eq(Providers::AWS::HVM_FLAVORS)
     end
@@ -52,7 +52,7 @@ RSpec.describe Providers::AWS do
 
   it { should respond_to(:images) }
 
-  context :images do
+  describe :images do
     it "should return INSTANCE_STORE_AMIS" do
       expect(Providers::AWS.images).to eq(Providers::AWS::INSTANCE_STORE_AMIS)
     end
@@ -60,9 +60,78 @@ RSpec.describe Providers::AWS do
 
   it { should respond_to(:regions) }
 
-  context :regions do
+  describe :regions do
     it "should return REGIONS" do
       expect(Providers::AWS.regions).to eq(Providers::AWS::REGIONS)
+    end
+  end
+
+  context :fog_client do
+    it "should return a Fog AWS client" do
+      expect(Providers::AWS.fog_client).to be_a(Fog::Compute::AWS::Mock)
+    end
+  end
+
+  it { should respond_to(:bootstrap!) }
+
+  describe :bootstrap! do
+    describe "security group" do
+      it "should create the security group if it doesn't exist" do
+        Providers::AWS.bootstrap!
+        expect(Providers::AWS.fog_client.security_groups.all("group-name" => "tsar_bomba")).to be_present
+      end
+
+      it "should not try to create the security group it exists" do
+        Providers::AWS.create_security_group
+        expect(Providers::AWS).to_not receive(:create_security_group)
+        Providers::AWS.bootstrap!
+      end
+    end
+
+    describe "security group rules" do
+      it "should call authorize_security_group if the security rule doesn't exist" do
+        Providers::AWS.create_security_group
+        expect(Providers::AWS).to receive(:authorize_security_group)
+        Providers::AWS.bootstrap!
+      end
+    end
+
+  end
+
+  describe :authorize_security_group do
+    before do
+      Providers::AWS.create_security_group
+    end
+
+    it "should authorize the security group for inbound TCP port 22 access" do
+      group = proc do
+        Providers::AWS.fog_client.security_groups.all("group-name" => Providers::AWS::SECURITY_GROUP_NAME).first
+      end
+      expect(group.call.ip_permissions).to eq([])
+      Providers::AWS.authorize_security_group
+      expect(group.call.ip_permissions).to include({
+        "ipProtocol"=>"tcp",
+        "fromPort"=>22,
+        "toPort"=>22,
+        "groups"=>[],
+        "ipRanges"=>[{"cidrIp"=>"0.0.0.0/0"}],
+      })
+    end
+
+    it "should rescue the error if the rule already exists" do
+      Providers::AWS.authorize_security_group
+      expect { Providers::AWS.authorize_security_group }.to_not raise_error
+    end
+  end
+
+  describe :create_security_group do
+    it "should create the security group" do
+      check = proc do
+        Providers::AWS.fog_client.security_groups.all("group-name" => Providers::AWS::SECURITY_GROUP_NAME)
+      end
+      expect(check.call).to_not be_present
+      Providers::AWS.create_security_group
+      expect(check.call).to be_present
     end
   end
 end

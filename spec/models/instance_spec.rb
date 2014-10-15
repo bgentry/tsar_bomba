@@ -44,8 +44,11 @@ RSpec.describe Instance, :type => :model do
 
   context :launch do
     it "should launch an EC2 instance" do
-      proxy = instance.send(:fog_client).servers
-      allow(instance.send(:fog_client)).to receive(:servers).and_return(proxy)
+      # TODO: unless instance is called first, :create_many gets called twice
+      # due to background jobs being processed.
+      instance # TODO create it, fix so this isn't needed
+      proxy = Providers::AWS.fog_client.servers
+      allow(Providers::AWS.fog_client).to receive(:servers).and_return(proxy)
       expect(proxy).to receive(:create_many).with(1, 1, {
         flavor_id: fleet.instance_type,
         image_id: Providers::AWS.images[fleet.provider_region],
@@ -73,7 +76,7 @@ RSpec.describe Instance, :type => :model do
     end
 
     it "should call terminate_instances with the provider_id" do
-      expect(instance.send(:fog_client)).to receive(:terminate_instances).
+      expect(Providers::AWS.fog_client).to receive(:terminate_instances).
         with(instance.provider_id).and_call_original
       instance.destroy_instance
     end
@@ -90,12 +93,6 @@ RSpec.describe Instance, :type => :model do
     it "should enqueue a LaunchInstanceJob" do
       expect(LaunchInstanceJob).to receive(:perform_later).with(instance)
       instance.send(:enqueue_launch)
-    end
-  end
-
-  context :fog_client do
-    it "should return a Fog AWS client" do
-      expect(Instance.new.send(:fog_client)).to be_a(Fog::Compute::AWS::Mock)
     end
   end
 end

@@ -83,6 +83,7 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
+    Fog::Mock.reset
     DatabaseCleaner.clean
   end
 end

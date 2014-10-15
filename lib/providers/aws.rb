@@ -33,6 +33,8 @@ module Providers
       "us-west-2"      => "ami-df4d0fef",
     }
 
+    SECURITY_GROUP_NAME = "tsar_bomba"
+
     def flavors
       HVM_FLAVORS
     end
@@ -45,5 +47,49 @@ module Providers
       REGIONS
     end
 
+    def bootstrap!
+      # TODO: key pair creation (and save in DB)
+      group = fog_client.security_groups.all("group-name" => SECURITY_GROUP_NAME).first
+      if group.present?
+        Rails.logger.debug("security group #{SECURITY_GROUP_NAME} exists")
+      else
+        Rails.logger.debug("creating security group #{SECURITY_GROUP_NAME}")
+        group = create_security_group
+      end
+
+      Rails.logger.debug("authorizing SSH access to security group #{SECURITY_GROUP_NAME}")
+      authorize_security_group
+      # TODO: toggle Flipper feature to indicate successful bootstrap
+    end
+
+    def create_security_group
+      group = fog_client.security_groups.new({
+        name: SECURITY_GROUP_NAME,
+        description: "Tsar Bomba load testing security group",
+      })
+      group.save
+      group
+    end
+
+    def authorize_security_group
+      fog_client.authorize_security_group_ingress(SECURITY_GROUP_NAME, {
+        'CidrIp' => '0.0.0.0/0',
+        'FromPort' => 22,
+        'ToPort' => 22,
+        'IpProtocol' => 'tcp',
+      })
+    rescue Fog::Compute::AWS::Error => e
+      unless e.message =~ /InvalidPermission\.Duplicate/
+        raise e
+      end
+    end
+
+    def fog_client
+      @fog_client ||= Fog::Compute::AWS.new({
+        :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+        :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
+        :region => 'us-east-1',
+      })
+    end
   end
 end

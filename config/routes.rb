@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     resources :instances, :only => :show
   end
 
+  get 'setup', to: 'setup#show'
+  post 'setup', to: 'setup#bootstrap'
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 
