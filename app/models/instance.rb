@@ -30,6 +30,10 @@ class Instance < ActiveRecord::Base
     WaitForInstanceRunningJob.perform_later(self)
   end
 
+  def running
+    update_attributes!(dns_name: remote.dns_name)
+  end
+
   def destroy_instance
     if provider_id.present?
       Providers::AWS::fog_client.terminate_instances(provider_id)

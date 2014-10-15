@@ -28,7 +28,8 @@ RSpec.describe Instance, :type => :model do
     end
 
     it "should transition from launched to running" do
-      instance.update_attribute(:state, "launched")
+      allow(instance).to receive(:remote).and_return(double("remote", dns_name: "abcd.internal"))
+      instance.state = "launched"
       instance.running!
       expect(instance.running?).to eq(true)
     end
@@ -66,6 +67,20 @@ RSpec.describe Instance, :type => :model do
     it "should enqueue a WaitForInstanceRunningJob" do
       expect(WaitForInstanceRunningJob).to receive(:perform_later).with(instance)
       instance.launch
+    end
+  end
+
+  it { should respond_to(:running) }
+
+  describe :running do
+    before do
+      allow(instance).to receive(:remote).and_return(double("remote", dns_name: "abcd.internal"))
+    end
+
+    it "should set the dns_name" do
+      instance.update_attribute(:dns_name, nil)
+      instance.running
+      expect(instance.dns_name).to eq("abcd.internal")
     end
   end
 
