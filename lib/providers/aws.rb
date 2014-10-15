@@ -33,6 +33,7 @@ module Providers
       "us-west-2"      => "ami-df4d0fef",
     }
 
+    KEY_PAIR_NAME = "tsar_bomba"
     SECURITY_GROUP_NAME = "tsar_bomba"
 
     def flavors
@@ -48,7 +49,14 @@ module Providers
     end
 
     def bootstrap!
-      # TODO: key pair creation (and save in DB)
+      key_pair = fog_client.key_pairs.get(KEY_PAIR_NAME)
+      if key_pair.present?
+        Rails.logger.debug("key pair #{KEY_PAIR_NAME} already exists")
+      else
+        Rails.logger.debug("creating key pair #{KEY_PAIR_NAME}")
+        key_pair = create_key_pair
+      end
+
       group = fog_client.security_groups.all("group-name" => SECURITY_GROUP_NAME).first
       if group.present?
         Rails.logger.debug("security group #{SECURITY_GROUP_NAME} exists")
@@ -59,7 +67,17 @@ module Providers
 
       Rails.logger.debug("authorizing SSH access to security group #{SECURITY_GROUP_NAME}")
       authorize_security_group
-      # TODO: toggle Flipper feature to indicate successful bootstrap
+    end
+
+    def create_key_pair
+      key_pair = fog_client.key_pairs.create(name: KEY_PAIR_NAME)
+
+      key_pair_db = SSHKeyPair.first
+      if key_pair_db.present?
+        key_pair_db.update!(private_key: key_pair.private_key)
+      else
+        SSHKeyPair.create!(private_key: key_pair.private_key)
+      end
     end
 
     def create_security_group
@@ -79,7 +97,7 @@ module Providers
         'IpProtocol' => 'tcp',
       })
     rescue Fog::Compute::AWS::Error => e
-      unless e.message =~ /InvalidPermission\.Duplicate/
+      unless e.message =~ /Duplicate/
         raise e
       end
     end

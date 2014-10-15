@@ -78,6 +78,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     $flipper = Flipper.new(Flipper::Adapters::Memory.new)
+    $flipper[:provider_bootstrapped].enable
     DatabaseCleaner.start
     Fog.mock!
   end

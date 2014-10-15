@@ -75,6 +75,19 @@ RSpec.describe Providers::AWS do
   it { should respond_to(:bootstrap!) }
 
   describe :bootstrap! do
+    describe "key pair" do
+      it "should create a key pair if it doesn't exist" do
+        Providers::AWS.bootstrap!
+        expect(Providers::AWS.fog_client.key_pairs.get(Providers::AWS::KEY_PAIR_NAME)).to be_present
+      end
+
+      it "should create a key pair if it doesn't exist" do
+        Providers::AWS.create_key_pair
+        Providers::AWS.bootstrap!
+        expect(Providers::AWS).to_not receive(:create_key_pair)
+      end
+    end
+
     describe "security group" do
       it "should create the security group if it doesn't exist" do
         Providers::AWS.bootstrap!
@@ -95,7 +108,6 @@ RSpec.describe Providers::AWS do
         Providers::AWS.bootstrap!
       end
     end
-
   end
 
   describe :authorize_security_group do
