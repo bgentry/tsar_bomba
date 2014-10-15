@@ -73,6 +73,7 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
 
   config.before(:suite) do
+    Rails.application.config.que.mode = :off
     DatabaseCleaner.strategy = :truncation
   end
 
