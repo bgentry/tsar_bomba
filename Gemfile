@@ -45,6 +45,7 @@ gem 'workflow'
 group :development, :test do
   gem 'awesome_print'
   gem "factory_girl_rails"
+  gem 'guard-bundler', require: false
   gem 'guard-rspec'
   if RUBY_PLATFORM.downcase.include?("darwin")
     gem 'rb-fsevent'
