@@ -13,7 +13,7 @@
   %dt Target:
   %dd= @run.target
   %dt Host header:
-  %dd= @run.host_header
+  %dd= @run.host_header.presence || "(none)"
   %dt Duration:
   %dd= @run.duration
   %dt Rate:

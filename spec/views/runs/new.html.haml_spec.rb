@@ -26,8 +26,6 @@ RSpec.describe "runs/new", :type => :view do
       assert_select "input#run_duration[name=?]", "run[duration]"
 
       assert_select "input#run_rate[name=?]", "run[rate]"
-
-      assert_select "input#run_state[name=?]", "run[state]"
     end
   end
 end

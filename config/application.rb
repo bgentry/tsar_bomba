@@ -24,5 +24,7 @@ module TsarBomba
     config.active_record.raise_in_transactional_callbacks = true
 
     config.active_job.queue_adapter = :que
+
+    config.filter_parameters << :raw_data
   end
 end

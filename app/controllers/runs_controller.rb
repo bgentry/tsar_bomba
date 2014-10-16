@@ -51,6 +51,6 @@ class RunsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def run_params
-      params.require(:run).permit(:fleet_id, :target, :host_header, :duration, :rate, :state)
+      params.require(:run).permit(:fleet_id, :target, :host_header, :duration, :rate)
     end
 end
