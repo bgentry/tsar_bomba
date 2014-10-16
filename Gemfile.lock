@@ -296,6 +296,7 @@ DEPENDENCIES
   haml-rails
   jbuilder (~> 2.0)
   jquery-rails
+  net-ssh
   pg
   puma
   que

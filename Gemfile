@@ -39,6 +39,7 @@ gem 'puma'
 gem 'flipper'
 gem 'flipper-activerecord'
 gem 'fog', github: 'fog/fog'
+gem 'net-ssh'
 gem 'que'
 gem 'workflow'
 

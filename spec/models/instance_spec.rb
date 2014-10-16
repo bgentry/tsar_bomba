@@ -6,6 +6,10 @@ RSpec.describe Instance, :type => :model do
 
   it { should belong_to(:fleet) }
 
+  before do
+    Providers::AWS.create_key_pair
+  end
+
   context 'workflow' do
     it { should respond_to(:awaiting_launch?) }
     it { should respond_to(:launch!) }
@@ -36,6 +40,7 @@ RSpec.describe Instance, :type => :model do
 
     it "should transition from running to ready" do
       instance.update_attribute(:state, "running")
+      allow(instance).to receive(:bootstrap)
       instance.bootstrap!
       expect(instance.ready?).to eq(true)
     end
@@ -82,6 +87,11 @@ RSpec.describe Instance, :type => :model do
       instance.update_attribute(:dns_name, nil)
       instance.running
       expect(instance.dns_name).to eq("abcd.internal")
+    end
+
+    it "should enqueue a BootstrapInstanceJob" do
+      expect(BootstrapInstanceJob).to receive(:perform_later).with(instance)
+      instance.running
     end
   end
 

@@ -47,10 +47,42 @@ class Instance < ActiveRecord::Base
                 end
   end
 
+  def bootstrap
+    Net::SSH.start(self.dns_name, "ubuntu", :key_data => [ssh_key_pair.private_key]) do |ssh|
+      [
+        "sudo apt-get update",
+        "yes | sudo apt-get install git-core mercurial",
+        "which go || (curl -o goinst.sh https://gist.githubusercontent.com/bgentry/3f508a2c6cb6417ad46c/raw/d3f065b9d5da740045634ef0a4dea98425528f7d/goinst.sh && chmod +x goinst.sh && sudo VERSION=1.3.3 ./goinst.sh)",
+        "source /etc/profile && go get -d -u github.com/bgentry/vegeta && cd $GOPATH/src/github.com/bgentry/vegeta && git checkout buckets && go install",
+        "source /etc/profile && sudo cp -f `which vegeta` /usr/local/bin/vegeta",
+      ].each do |command|
+        block ||= Proc.new do |ch, type, data|
+          ch[:result] ||= ""
+          ch[:result] << data
+        end
+
+        channel = ssh.exec(command, &block)
+        channel.on_request "exit-status" do |ch, data|
+          exit_status = data.read_long
+          unless exit_status == 0
+            raise "process terminated with exit status: #{exit_status}"
+          end
+        end
+        channel.wait
+
+        Rails.logger.debug("SSH RESULT: \n#{channel[:result]}\n\n")
+      end
+    end
+  end
+
   protected
 
   def enqueue_launch
     LaunchInstanceJob.perform_later(self)
+  end
+
+  def ssh_key_pair
+    @key ||= SSHKeyPair.first!
   end
 
 end
