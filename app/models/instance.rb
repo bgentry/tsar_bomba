@@ -55,7 +55,9 @@ class Instance < ActiveRecord::Base
         "yes | sudo apt-get install git-core mercurial",
         "which go || (curl -o goinst.sh https://gist.githubusercontent.com/bgentry/3f508a2c6cb6417ad46c/raw/d3f065b9d5da740045634ef0a4dea98425528f7d/goinst.sh && chmod +x goinst.sh && sudo VERSION=1.3.3 ./goinst.sh)",
         "source /etc/profile && go get -d -u github.com/bgentry/vegeta && cd $GOPATH/src/github.com/bgentry/vegeta && git checkout buckets && go install",
-        "source /etc/profile && sudo cp -f `which vegeta` /usr/local/bin/vegeta",
+        "source /etc/profile && sudo cp -f $GOPATH/bin/vegeta /usr/local/bin/vegeta",
+        "source /etc/profile && go get -u github.com/bgentry/vegeta-encoder",
+        "source /etc/profile && sudo cp -f $GOPATH/bin/vegeta-encoder /usr/local/bin/vegeta-encoder",
       ].each do |command|
         block ||= Proc.new do |ch, type, data|
           ch[:result] ||= ""
@@ -76,14 +78,14 @@ class Instance < ActiveRecord::Base
     end
   end
 
+  def ssh_key_pair
+    @key ||= SSHKeyPair.first!
+  end
+
   protected
 
   def enqueue_launch
     LaunchInstanceJob.perform_later(self)
-  end
-
-  def ssh_key_pair
-    @key ||= SSHKeyPair.first!
   end
 
 end

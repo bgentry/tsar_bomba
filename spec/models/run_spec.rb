@@ -39,4 +39,18 @@ RSpec.describe Run, :type => :model do
       expect(build_stubbed(:run).initiated?).to eq(true)
     end
   end
+
+  context :enqueue_perform_run do
+    let(:run) { build(:run) }
+
+    it "should receive :enqueue_perform_run after create" do
+      expect(run).to receive(:enqueue_perform_run)
+      run.save!
+    end
+
+    it "should enqueue a PerformRunJob" do
+      expect(PerformRunJob).to receive(:perform_later).with(run)
+      run.send(:enqueue_perform_run)
+    end
+  end
 end
