@@ -24,6 +24,7 @@ class Instance < ActiveRecord::Base
     resp = Providers::AWS::fog_client.servers.create_many(1, 1, {
       flavor_id: fleet.instance_type,
       image_id: Providers::AWS.images[fleet.provider_region],
+      key_name: Providers::AWS::KEY_PAIR_NAME,
       security_group_ids: Providers::AWS::SECURITY_GROUP_NAME,
     })
     update_attributes!(provider_id: resp.first.id)

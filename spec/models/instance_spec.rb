@@ -53,6 +53,7 @@ RSpec.describe Instance, :type => :model do
       expect(proxy).to receive(:create_many).with(1, 1, {
         flavor_id: fleet.instance_type,
         image_id: Providers::AWS.images[fleet.provider_region],
+        key_name: Providers::AWS::KEY_PAIR_NAME,
         security_group_ids: Providers::AWS::SECURITY_GROUP_NAME,
       }).and_call_original
       instance.launch
