@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141016042109) do
+ActiveRecord::Schema.define(version: 20141016062529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,14 @@ ActiveRecord::Schema.define(version: 20141016042109) do
     t.text     "last_error"
   end
 
+  create_table "results", force: true do |t|
+    t.integer  "run_id"
+    t.integer  "instance_id"
+    t.json     "raw_data",    null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "runs", force: true do |t|
     t.integer  "fleet_id"
     t.string   "target",      null: false
@@ -80,4 +88,5 @@ ActiveRecord::Schema.define(version: 20141016042109) do
 
   add_foreign_key "flipper_gates", "flipper_features", on_delete: :cascade
   add_foreign_key "instances", "fleets"
+  add_foreign_key "results", "runs", on_delete: :cascade
 end

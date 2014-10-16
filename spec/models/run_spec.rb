@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Run, :type => :model do
+  it { should belong_to :fleet }
+
+  it { should have_many(:results).dependent(:destroy) }
+
   it { should validate_presence_of(:fleet).on(:create) }
 
   it { should validate_presence_of(:target) }

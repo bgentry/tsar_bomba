@@ -2,6 +2,7 @@ class Run < ActiveRecord::Base
   include Workflow
 
   belongs_to :fleet
+  has_many :results, :dependent => :destroy
 
   validates :fleet, presence: true, on: :create
   validates :state, presence: true
