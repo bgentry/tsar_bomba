@@ -1,0 +1,22 @@
+.page-header
+  = link_to runs_path, :class => 'btn btn-default' do
+    %span.glyphicon.glyphicon-list-alt
+    Back
+  = link_to @run, :class => 'btn btn-danger', :data => { confirm: 'Are you sure?' }, :method => :delete do
+    %span.glyphicon.glyphicon-trash
+    Destroy
+  %h1 Show run
+
+%dl.dl-horizontal
+  %dt Fleet:
+  %dd= link_to @run.fleet_id, @run.fleet
+  %dt Target:
+  %dd= @run.target
+  %dt Host header:
+  %dd= @run.host_header
+  %dt Duration:
+  %dd= @run.duration
+  %dt Rate:
+  %dd= @run.rate
+  %dt State:
+  %dd= @run.state

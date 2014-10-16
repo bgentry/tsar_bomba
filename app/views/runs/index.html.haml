@@ -1,0 +1,30 @@
+.page-header
+  = link_to new_run_path, :class => 'btn btn-primary' do
+    %span.glyphicon.glyphicon-plus
+    New Run
+  %h1 Listing runs
+
+.table-responsive
+  %table.table.table-striped.table-bordered.table-hover
+    %thead
+      %tr
+        %th Fleet
+        %th Target
+        %th Host header
+        %th Duration
+        %th Rate
+        %th State
+        %th
+        %th
+
+    %tbody
+      - @runs.each do |run|
+        %tr
+          %td= run.fleet_id
+          %td= run.target
+          %td= run.host_header
+          %td= run.duration
+          %td= run.rate
+          %td= run.state
+          %td= link_to 'Show', run
+          %td= link_to 'Destroy', run, :data => { confirm: 'Are you sure?' }, :method => :delete

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     resources :instances, :only => :show
   end
 
+  resources :runs, :except => [:edit, :update]
+
   get 'setup', to: 'setup#show'
   post 'setup', to: 'setup#bootstrap'
 

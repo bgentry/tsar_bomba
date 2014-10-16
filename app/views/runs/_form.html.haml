@@ -1,0 +1,37 @@
+= form_for @run, :html => { :class => "form-horizontal" } do |f|
+  -if @run.errors.any?
+    .alert.alert-danger.alert-dismissable
+      %button.close{"aria-hidden" => "true", "data-dismiss" => "alert", :type => "button"} &times;
+      %h4= "#{pluralize(@run.errors.count, "error")} prohibited this run from being saved:"
+
+      %ul
+        - @run.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.label :fleet_id, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.number_field :fleet_id, :class => 'form-control'
+  .form-group
+    = f.label :target, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :target, :class => 'form-control'
+  .form-group
+    = f.label :host_header, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :host_header, :class => 'form-control'
+  .form-group
+    = f.label :duration, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.number_field :duration, :class => 'form-control'
+  .form-group
+    = f.label :rate, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.number_field :rate, :class => 'form-control'
+  .form-group
+    = f.label :state, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_field :state, :class => 'form-control'
+  .form-group
+    .col-sm-offset-2.col-sm-10
+      = f.submit :class => 'btn btn-primary'

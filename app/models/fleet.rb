@@ -2,8 +2,6 @@ require 'fog'
 require 'providers'
 
 class Fleet < ActiveRecord::Base
-  include ActiveModel::Validations
-
   attr_readonly :instance_count, :instance_type
 
   has_many :instances, :dependent => :destroy

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141015224001) do
+ActiveRecord::Schema.define(version: 20141016042109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,17 @@ ActiveRecord::Schema.define(version: 20141015224001) do
     t.json     "args",                  default: [],                                         null: false
     t.integer  "error_count",           default: 0,                                          null: false
     t.text     "last_error"
+  end
+
+  create_table "runs", force: true do |t|
+    t.integer  "fleet_id"
+    t.string   "target",      null: false
+    t.string   "host_header"
+    t.integer  "duration",    null: false
+    t.integer  "rate",        null: false
+    t.string   "state",       null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "ssh_key_pairs", force: true do |t|
