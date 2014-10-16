@@ -33,6 +33,7 @@ class Instance < ActiveRecord::Base
 
   def running
     update_attributes!(dns_name: remote.dns_name)
+    BootstrapInstanceJob.set(wait: 20.seconds).perform_later(self)
   end
 
   def destroy_instance

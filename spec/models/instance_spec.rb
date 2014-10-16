@@ -90,7 +90,9 @@ RSpec.describe Instance, :type => :model do
     end
 
     it "should enqueue a BootstrapInstanceJob" do
-      expect(BootstrapInstanceJob).to receive(:perform_later).with(instance)
+      proxy = BootstrapInstanceJob.set(20.seconds)
+      expect(BootstrapInstanceJob).to receive(:set).with(wait: 20.seconds).and_return(proxy)
+      expect(proxy).to receive(:perform_later).with(instance)
       instance.running
     end
   end
