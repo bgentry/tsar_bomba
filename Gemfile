@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.0.beta2'
+gem 'rails', '~> 4.2.0.beta4'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
@@ -38,7 +38,7 @@ gem 'puma'
 
 gem 'flipper'
 gem 'flipper-activerecord'
-gem 'fog', github: 'fog/fog'
+gem 'fog'
 gem 'net-ssh'
 gem 'que'
 gem 'workflow'
