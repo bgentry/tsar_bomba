@@ -22,8 +22,8 @@ class Instance < ActiveRecord::Base
 
   def launch
     resp = Providers::AWS::fog_client.servers.create_many(1, 1, {
-      flavor_id: fleet.instance_type,
-      image_id: Providers::AWS.images[fleet.provider_region],
+      flavor_id: self.fleet.instance_type,
+      image_id: Providers::AWS.images[self.fleet.provider_region],
       key_name: Providers::AWS::KEY_PAIR_NAME,
       security_group_ids: Providers::AWS::SECURITY_GROUP_NAME,
     })
