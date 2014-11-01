@@ -7,8 +7,8 @@ RSpec.describe "runs/index", :type => :view do
       :fleet => fleet,
       :target => "Target",
       :host_header => "Host Header",
-      :duration => 2,
-      :rate => 3,
+      :duration => 600,
+      :rate => 200,
     )
   end
   let(:run2) do
@@ -16,8 +16,8 @@ RSpec.describe "runs/index", :type => :view do
       :fleet => fleet,
       :target => "Target",
       :host_header => "Host Header",
-      :duration => 2,
-      :rate => 3,
+      :duration => 60,
+      :rate => 100,
     )
   end
 
@@ -27,11 +27,14 @@ RSpec.describe "runs/index", :type => :view do
 
   it "renders a list of runs" do
     render
-    assert_select "tr>td", :text => fleet.id.to_s, :count => 2
+    assert_select "tr>td", :text => fleet.id.to_s, :count => 3
     assert_select "tr>td", :text => "Target".to_s, :count => 2
     assert_select "tr>td", :text => "Host Header".to_s, :count => 2
-    assert_select "tr>td", :text => 2.to_s, :count => 2
-    assert_select "tr>td", :text => 3.to_s, :count => 2
+    assert_select "tr>td", :text => 2.to_s, :count => 1
+    assert_select "tr>td", :text => 100.to_s, :count => 1
+    assert_select "tr>td", :text => 200.to_s, :count => 1
+    assert_select "tr>td", :text => 60.to_s, :count => 1
+    assert_select "tr>td", :text => 600.to_s, :count => 1
     assert_select "tr>td", :text => "initiated".to_s, :count => 2
   end
 end

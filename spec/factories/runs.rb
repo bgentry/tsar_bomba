@@ -5,5 +5,7 @@ FactoryGirl.define do
     host_header "sub.example.com"
     duration 90
     rate 200
+
+    notes "extra special notes"
   end
 end

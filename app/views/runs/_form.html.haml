@@ -29,5 +29,9 @@
     .col-sm-10
       = f.number_field :rate, :class => 'form-control'
   .form-group
+    = f.label :notes, :class => 'col-sm-2 control-label'
+    .col-sm-10
+      = f.text_area :notes, rows: 3, class: 'form-control'
+  .form-group
     .col-sm-offset-2.col-sm-10
       = f.submit :class => 'btn btn-primary'

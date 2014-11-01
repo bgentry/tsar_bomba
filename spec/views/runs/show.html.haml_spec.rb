@@ -9,6 +9,7 @@ RSpec.describe "runs/show", :type => :view do
       :rate => 3,
       :state => "State"
     ))
+    @estimator = assign(:estimator, Quantile::Estimator.new)
   end
 
   it "renders attributes in <p>" do

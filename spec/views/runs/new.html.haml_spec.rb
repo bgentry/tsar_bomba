@@ -8,7 +8,8 @@ RSpec.describe "runs/new", :type => :view do
       :host_header => "MyString",
       :duration => 1,
       :rate => 1,
-      :state => "MyString"
+      :state => "MyString",
+      :notes => "This is an important run",
     ))
   end
 
@@ -26,6 +27,8 @@ RSpec.describe "runs/new", :type => :view do
       assert_select "input#run_duration[name=?]", "run[duration]"
 
       assert_select "input#run_rate[name=?]", "run[rate]"
+
+      assert_select "textarea#run_notes[name=?]", "run[notes]"
     end
   end
 end
