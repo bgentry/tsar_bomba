@@ -20,3 +20,11 @@
   %dd= @run.rate
   %dt State:
   %dd= @run.state
+  %dt p50:
+  %dd= @estimator.query(0.5)
+  %dt p90:
+  %dd= @estimator.query(0.90)
+  %dt p95:
+  %dd= @estimator.query(0.95)
+  %dt p99:
+  %dd= @estimator.query(0.99)

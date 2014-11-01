@@ -42,7 +42,7 @@ class Run < ActiveRecord::Base
     fleet.instances.each do |instance|
       threads << Thread.new do
         Net::SSH.start(instance.dns_name, "ubuntu", :key_data => [instance.ssh_key_pair.private_key]) do |ssh|
-          block ||= Proc.new do |ch, type, data|
+          block ||= Proc.new do |ch, kind, data|
             ch[:result] ||= ""
             ch[:result] << data
           end

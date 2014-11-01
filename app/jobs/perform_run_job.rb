@@ -11,6 +11,7 @@ class PerformRunJob < ActiveJob::Base
     run.finish!
   rescue Exception => e
     Rails.logger.error("exception during run: #{e.inspect}")
+    Rails.logger.error("exception during run: #{e.backtrace}")
     run.fail!
   end
 end

@@ -8,6 +8,7 @@
   %table.table.table-striped.table-bordered.table-hover
     %thead
       %tr
+        %th ID
         %th Fleet
         %th Target
         %th Host header
@@ -20,6 +21,7 @@
     %tbody
       - @runs.each do |run|
         %tr
+          %td= link_to run.id, run
           %td= run.fleet_id
           %td= run.target
           %td= run.host_header

@@ -2,24 +2,27 @@ require 'rails_helper'
 
 RSpec.describe "runs/index", :type => :view do
   let(:fleet) { create(:fleet) }
+  let(:run1) do
+    create(:run,
+      :fleet => fleet,
+      :target => "Target",
+      :host_header => "Host Header",
+      :duration => 2,
+      :rate => 3,
+    )
+  end
+  let(:run2) do
+    create(:run,
+      :fleet => fleet,
+      :target => "Target",
+      :host_header => "Host Header",
+      :duration => 2,
+      :rate => 3,
+    )
+  end
 
   before(:each) do
-    assign(:runs, [
-      create(:run,
-        :fleet => fleet,
-        :target => "Target",
-        :host_header => "Host Header",
-        :duration => 2,
-        :rate => 3,
-      ),
-      create(:run,
-        :fleet => fleet,
-        :target => "Target",
-        :host_header => "Host Header",
-        :duration => 2,
-        :rate => 3,
-      )
-    ])
+    assign(:runs, [run1, run2])
   end
 
   it "renders a list of runs" do

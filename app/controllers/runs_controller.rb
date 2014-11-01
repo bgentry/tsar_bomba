@@ -1,3 +1,5 @@
+require 'quantile'
+
 class RunsController < ApplicationController
   before_action :set_run, only: [:show, :edit, :update, :destroy]
 
@@ -10,6 +12,18 @@ class RunsController < ApplicationController
   # GET /runs/1
   # GET /runs/1.json
   def show
+    @estimator = Quantile::Estimator.new
+    query = <<-DOC
+SELECT value->'Latency' AS latency_ns
+FROM results, json_array_elements(results.raw_data)
+WHERE results.run_id = #{@run.id} AND
+  value->>'Error' = '' AND
+  value->>'Code' >= '200' AND
+  value->>'Code' < '300'
+DOC
+    ActiveRecord::Base.connection.select_values(query).each do |latency|
+      @estimator.observe(latency.to_f/10**6)
+    end
   end
 
   # GET /runs/new

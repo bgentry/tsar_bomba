@@ -40,6 +40,7 @@ gem 'flipper'
 gem 'flipper-activerecord'
 gem 'fog'
 gem 'net-ssh'
+gem 'quantile'
 gem 'que'
 gem 'workflow'
 

@@ -1,3 +1,5 @@
+require 'ssh_key_pair'
+
 class Instance < ActiveRecord::Base
   include Workflow
 
@@ -59,7 +61,7 @@ class Instance < ActiveRecord::Base
         "source /etc/profile && go get -u github.com/bgentry/vegeta-encoder",
         "source /etc/profile && sudo cp -f $GOPATH/bin/vegeta-encoder /usr/local/bin/vegeta-encoder",
       ].each do |command|
-        block ||= Proc.new do |ch, type, data|
+        block ||= Proc.new do |ch, kind, data|
           ch[:result] ||= ""
           ch[:result] << data
         end

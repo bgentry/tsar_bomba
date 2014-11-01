@@ -13,6 +13,7 @@ RSpec.describe "runs/show", :type => :view do
 
   it "renders attributes in <p>" do
     render
+    expect(rendered).to match(/#{@run.id}/)
     expect(rendered).to match(/#{@run.fleet.id}/)
     expect(rendered).to match(/Target/)
     expect(rendered).to match(/Host Header/)
