@@ -7,7 +7,8 @@ RSpec.describe "runs/show", :type => :view do
       :host_header => "Host Header",
       :duration => 2,
       :rate => 3,
-      :state => "State"
+      :state => "State",
+      :notes => "a special note",
     ))
     @estimator = assign(:estimator, Quantile::Estimator.new)
   end
@@ -21,5 +22,6 @@ RSpec.describe "runs/show", :type => :view do
     expect(rendered).to match(/2/)
     expect(rendered).to match(/3/)
     expect(rendered).to match(/State/)
+    expect(rendered).to match(/a special note/)
   end
 end
