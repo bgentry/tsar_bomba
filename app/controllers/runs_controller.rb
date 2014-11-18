@@ -6,7 +6,7 @@ class RunsController < ApplicationController
   # GET /runs
   # GET /runs.json
   def index
-    @runs = Run.all
+    @runs = Run.order(:id).all
   end
 
   # GET /runs/1
